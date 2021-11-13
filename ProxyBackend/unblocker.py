@@ -40,13 +40,11 @@ class Proxy:
                 request = conn.recv(8100).decode(decoding_format)
                 if SECURITY_KEY in request:
                     conn.send(function(request))
+                else:
+                    self.server.close()
 
         self.server.listen()
         while True:
             connection, address = self.server.accept()
             thread = threading.Thread(target=client, args=connection)
             thread.start()
-
-    def close(self):
-        """ This function is here to shut down the server when needed. """
-        self.server.close()
