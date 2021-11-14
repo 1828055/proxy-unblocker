@@ -50,4 +50,3 @@ class ProxyClient:
         """ This function is here to send a proper quit message to the server to properly disconnect. """
         self.client.send('/quit'.encode(self.format))
         self.is_connected = False
-

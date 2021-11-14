@@ -8,7 +8,7 @@ client = ProxyClient(
 
 client.connect()
 while client.is_connected:
-    url = input('> ')
+    url = input('>> ')
     if url == '/quit':
         client.quit()
     else:
