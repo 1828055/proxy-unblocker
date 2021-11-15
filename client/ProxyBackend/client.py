@@ -20,7 +20,7 @@ class ProxyClient:
         port,
         server_ip,
         SECURITY_KEY, 
-        crypto_key=' abcdefghijklmnopqrstuvwsyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()><.,:"?{}+=\/-',
+        crypto_key=' abcdefghijklmnopqrstuvwsyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()><.,:"?{}+=\/-',
         encoding_format='utf-8'
     ):
 

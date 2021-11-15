@@ -19,7 +19,7 @@ class Proxy:
         port,
         location, 
         decode_format='utf-8',
-        crypto_key=' abcdefghijklmnopqrstuvwsyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()><.,:"?{}+=\/-',
+        crypto_key=' abcdefghijklmnopqrstuvwsyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()><.,:"?{}+=\/-',
     ):
         """ INIT class: """
         self.server_ip = socket.gethostbyname(socket.gethostname())
