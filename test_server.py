@@ -11,5 +11,5 @@ if __name__ == '__main__':
     # start server:
     server.initialize()
     print('STARTING SERVER...')
-    server.start(function=http, SECURITY_KEY='abc123', decoding_format='utf-8')
+    server.start(function=http, SECURITY_KEY='abc123')
 
