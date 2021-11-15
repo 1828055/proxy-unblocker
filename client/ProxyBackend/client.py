@@ -8,11 +8,22 @@ except:
     import socket
     import time
 
+from proxy_cryptography import *
+from proxy_cryptography.protocols import UniqueProtocol
+
 # ------------------------------------------------ CLASS DECLARATIONS -------------------------------------------
 
 
 class ProxyClient:
-    def __init__(self, port, server_ip, SECURITY_KEY, encoding_format='utf-8'):
+    def __init__(
+        self, 
+        port,
+        server_ip,
+        SECURITY_KEY, 
+        crypto_key=' abcdefghijklmnopqrstuvwsyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()><.,:"?{}+=\/-',
+        encoding_format='utf-8'
+    ):
+
         """ INIT class. """
         self.ip = server_ip
         self.port = port
@@ -20,6 +31,7 @@ class ProxyClient:
         self.key = SECURITY_KEY
         self.format = encoding_format
         self.is_connected = False
+        self.encrypter = UniqueProtocol(crypto_key, encoding_format)
 
     def connect(self):
         """ This function is here to connect with the proxy server.
@@ -41,12 +53,17 @@ class ProxyClient:
         """ This function is to send a message to the server is a secure way using the encoding format. """
         try:
             url = self.key + " " + url
-            self.client.send(url.encode(self.format))
+            self.client.send(self.encrypter.encrypt(url))
             time.sleep(0.01)
         except:
             print('failed to send request to server, the server closed the connection because of suspicious activity.')
 
     def quit(self):
         """ This function is here to send a proper quit message to the server to properly disconnect. """
-        self.client.send('/quit'.encode(self.format))
+        self.client.send(self.encrypter.encrypt('/quit'))
         self.is_connected = False
+    
+    def get(self):
+        """ This function is here to wait untill a response is sent. """
+        response = self.client.recv(30000000)
+        return self.encrypter.decrypt(response)

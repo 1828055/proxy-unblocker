@@ -1,5 +1,5 @@
 # --------------------------------------------------- GET DEPENDENCIES -----------------------------------------------
-from typing import List, Any
+from proxy_cryptography.protocols import UniqueProtocol
 
 try:
     import socket
@@ -14,7 +14,13 @@ except:
 
 
 class Proxy:
-    def __init__(self, port, location):
+    def __init__(
+        self,
+        port,
+        location, 
+        decode_format='utf-8',
+        crypto_key=' abcdefghijklmnopqrstuvwsyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()><.,:"?{}+=\/-',
+    ):
         """ INIT class: """
         self.server_ip = socket.gethostbyname(socket.gethostname())
         self.server = socket.socket()
@@ -22,6 +28,7 @@ class Proxy:
         self.address = (self.server_ip, self.port)
         self.total_clients = threading.activeCount() - 1
         self.location = location
+        self.decrypter = UniqueProtocol(crypto_key, decode_format)
 
     def initialize(self):
         """ This function lets you create your own server, please use the ip provided properly."""
@@ -32,7 +39,7 @@ class Proxy:
         except:
             return None
 
-    def start(self, function, SECURITY_KEY, decoding_format='utf-8'):
+    def start(self, function, SECURITY_KEY):
         """ This function is responsible to start the whole loop of request and response, it will take an
         argument regarding what function to run when dealt with a request. the input function must have one
         argument, which is the request, and must return a response"""
@@ -40,10 +47,10 @@ class Proxy:
         def client(conn, addr):
             print('[*] NEW CLIENT CONNECTED')
             while True:
-                request = conn.recv(8100).decode(decoding_format)
+                request = self.decrypter.decrypt(conn.recv(8100))
                 if SECURITY_KEY in request:
                     http_handler = function
-                    conn.send(http_handler(request).encode(decoding_format))
+                    conn.send(self.decrypter.encrypt(http_handler(request)))
                 elif request == '/quit':
                     print('[*] CLIENT DISCONNECTED')
                     break

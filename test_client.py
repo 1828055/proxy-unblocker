@@ -13,3 +13,4 @@ while client.is_connected:
         client.quit()
     else:
         client.send(url)
+        print(client.get())
