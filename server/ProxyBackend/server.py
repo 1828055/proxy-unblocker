@@ -15,7 +15,7 @@ except:
 class UniqueProtocol:
     def __init__(self, key, binary_format):
         """ INIT class (note that key is a string) """
-        self.key = key
+        self.key = key 
         self.format = binary_format
 
     def encrypt(self, string):

@@ -21,14 +21,9 @@ while client.is_connected:
         response = client.get()
 
         # export html:
-        encoding = 'utf-8'
-        file = open('index.html', 'w', encoding=encoding)
-        try:
+        with open('index.html', 'w') as file:
             file.write(response)
-        except:
-            encoding = 'windows-1525'
-            file.write(response)
-        file.close()
+            file.close()
 
         soup = bs(response, 'html.parser')
 

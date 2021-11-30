@@ -1,5 +1,6 @@
 from server.ProxyBackend.server import *
 import urllib3
+from bs4 import BeautifulSoup
 
 
 def http(request):
@@ -8,10 +9,8 @@ def http(request):
 
     if response.status == 200:
         print('[*] SENDING RESPONSE...')
-        try:
-            return response.data.decode('utf-8')
-        except:
-            return response.data.decode('windows-1525')
+        soup = BeautifulSoup(response, 'html.parser')
+        return soup.prettify()
     else:
         print("[*] Failed to send response to client...")
         error = open('404.html', 'r')
